@@ -30,12 +30,91 @@
 }
 
 body {
-    background-color: var(--bg-dark);
+    background-color: #05080f;
+    /* Deepest Navy */
     color: var(--text-primary);
     font-family: var(--font-body);
     line-height: 1.6;
     overflow-x: hidden;
+    min-height: 100vh;
 }
+
+/* AR/VR Background Container */
+#ar-vr-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -10;
+    overflow: hidden;
+    perspective: 1000px;
+    background: radial-gradient(circle at center, #1b2735 0%, #05080f 100%);
+}
+
+/* 3D Floor Grid */
+.cyber-floor {
+    position: absolute;
+    bottom: -50%;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(0, 240, 255, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.3) 1px, transparent 1px);
+    background-size: 80px 80px;
+    transform: rotateX(60deg);
+    animation: moveFloor 10s linear infinite;
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, transparent 80%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, transparent 80%);
+}
+
+@keyframes moveFloor {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 0 80px;
+    }
+}
+
+/* Floating Data Particles */
+.ar-particle {
+    position: absolute;
+    background: rgba(0, 240, 255, 0.5);
+    border: 1px solid rgba(0, 240, 255, 0.8);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* Scan Line Overlay */
+.scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(0, 240, 255, 0.05), transparent);
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+    z-index: 10;
+}
+
+@keyframes scan {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+
+/* Star styles removed */
+
 
 a {
     text-decoration: none;
@@ -148,29 +227,118 @@ nav {
     color: var(--accent-blue);
 }
 
+/* Navigation & Dropdowns */
 .nav-links {
     display: flex;
     gap: 2rem;
+    align-items: center;
 }
 
 .nav-links a {
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.nav-links a:hover {
+.dropdown {
+    position: relative;
+    height: 100%;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 220px;
+    background: rgba(13, 18, 31, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    margin: 0;
+}
+
+.dropdown-menu a {
+    padding: 0.8rem 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: block;
+}
+
+.dropdown-menu a:hover {
+    background: rgba(0, 240, 255, 0.05);
+    color: var(--accent-blue);
+    padding-left: 1.8rem;
+    border-left: 3px solid var(--accent-blue);
+}
+
+.arrow {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown:hover .arrow {
+    transform: rotate(180deg);
+}
+
+/* Original Hover retained */
+.nav-links>li>a:hover {
     color: var(--accent-blue);
 }
 
 /* Hero Section */
+/* Hero Section - Ensure transparency */
 .hero {
     height: 100vh;
     display: flex;
     align-items: center;
     position: relative;
-    background: radial-gradient(circle at 50% 50%, #1a2333 0%, var(--bg-dark) 70%);
+    /* Removed solid background to let galaxy show through */
+    background: transparent;
 }
+
+/* Standard Glassmorphism for Containers */
+.service-card,
+.contact-wrapper,
+.engagement-model-box,
+.step-card,
+.table-container,
+.faq-item {
+    background: rgba(21, 26, 38, 0.6) !important;
+    /* Revert to standard opacity */
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.step-card:hover {
+    background: rgba(21, 26, 38, 0.8) !important;
+}
+
+/* Ensure header is semi-transparent */
+header {
+    background: rgba(10, 14, 23, 0.7) !important;
+    backdrop-filter: blur(10px);
+}
+
 
 .hero-content {
     max-width: 800px;
@@ -667,19 +835,12 @@ footer {
 /* --- Phase 3 Enterprise Enhancements --- */
 
 /* Mesh Gradient Background */
+/* Mesh Gradient Background Enhanced */
+/* Old mesh gradient removed for stars */
 body::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.1), transparent 60%),
-        radial-gradient(circle at 80% 20%, rgba(0, 240, 255, 0.05), transparent 40%);
-    z-index: -1;
-    animation: rotate 60s linear infinite;
-    pointer-events: none;
+    display: none;
 }
+
 
 @keyframes rotate {
     from {

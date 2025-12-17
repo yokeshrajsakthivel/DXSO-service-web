@@ -82,4 +82,71 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.toggle('active');
         });
     });
+
+
+
+
+    // AR/VR Background Initialization
+    const initARVR = () => {
+        // Create Container
+        const container = document.createElement('div');
+        container.id = 'ar-vr-container';
+
+        // Create Floor
+        const floor = document.createElement('div');
+        floor.className = 'cyber-floor';
+        container.appendChild(floor);
+
+        // Create Scan Line
+        const scanLine = document.createElement('div');
+        scanLine.className = 'scan-line';
+        container.appendChild(scanLine);
+
+        document.body.prepend(container);
+
+        // Parallax Effect
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth - e.pageX * 2) / 100;
+            const y = (window.innerHeight - e.pageY * 2) / 100;
+            floor.style.transform = `rotateX(60deg) translateX(${x}px) translateY(${y}px)`;
+        });
+
+        // Floating Data Generation
+        setInterval(() => {
+            const particle = document.createElement('div');
+            particle.className = 'ar-particle';
+
+            // Random Properties
+            const size = Math.random() * 20 + 10;
+            const xPos = Math.random() * 100;
+            const duration = Math.random() * 5 + 5;
+
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${xPos}%`;
+            particle.style.bottom = '-50px';
+
+            // Random shape (cube-ish via border radius)
+            particle.style.borderRadius = Math.random() > 0.5 ? '2px' : '50%';
+
+            // Animation via WAAPI for performance
+            const keyframes = [
+                { transform: `translateY(0) rotate(0deg)`, opacity: 0 },
+                { transform: `translateY(-${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0.6, offset: 0.5 },
+                { transform: `translateY(-${window.innerHeight * 1.2}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+            ];
+
+            particle.animate(keyframes, {
+                duration: duration * 1000,
+                easing: 'linear'
+            });
+
+            container.appendChild(particle);
+
+            // Cleanup
+            setTimeout(() => particle.remove(), duration * 1000);
+        }, 800);
+    };
+
+    initARVR();
 });
